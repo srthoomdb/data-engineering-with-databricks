@@ -105,7 +105,7 @@ WHEN NOT MATCHED AND b.delicious = true THEN
 -- COMMAND ----------
 
 -- TODO
-<FILL-IN>
+DESCRIBE HISTORY beans;
 
 -- COMMAND ----------
 
@@ -171,7 +171,7 @@ SELECT * FROM beans
 
 -- TODO
 CREATE OR REPLACE TEMP VIEW pre_delete_vw AS
-<FILL-IN>
+SELECT * FROM beans VERSION AS OF 4
 
 -- COMMAND ----------
 
@@ -205,7 +205,7 @@ SELECT * FROM pre_delete_vw
 -- COMMAND ----------
 
 -- TODO
-<FILL-IN>
+RESTORE TABLE beans TO VERSION AS OF 5;
 
 -- COMMAND ----------
 
@@ -224,6 +224,7 @@ DESCRIBE HISTORY beans
 -- MAGIC last_tx = spark.conf.get("spark.databricks.delta.lastCommitVersionInSession")
 -- MAGIC assert spark.sql(f"DESCRIBE HISTORY beans").select("operation").first()[0] == "RESTORE", "Make sure you reverted your table with the `RESTORE` keyword"
 -- MAGIC assert spark.table("beans").count() == 5, "Make sure you reverted to the version after deleting records but before merging"
+-- MAGIC print(last_tx)
 
 -- COMMAND ----------
 
@@ -240,7 +241,8 @@ DESCRIBE HISTORY beans
 -- COMMAND ----------
 
 -- TODO
-<FILL-IN>
+OPTIMIZE beans
+ZORDER BY name
 
 -- COMMAND ----------
 
@@ -252,6 +254,10 @@ DESCRIBE HISTORY beans
 -- COMMAND ----------
 
 DESCRIBE DETAIL beans
+
+-- COMMAND ----------
+
+DESCRIBE HISTORY beans;
 
 -- COMMAND ----------
 
@@ -364,7 +370,7 @@ SELECT * FROM beans
 
 -- COMMAND ----------
 
--- SELECT * FROM beans@v1
+SELECT * FROM beans@v1
 
 -- COMMAND ----------
 

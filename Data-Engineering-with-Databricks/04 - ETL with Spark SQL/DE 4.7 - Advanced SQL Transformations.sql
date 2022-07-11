@@ -66,7 +66,7 @@ SELECT * FROM events_strings
 
 -- COMMAND ----------
 
-SELECT value:device, value:geo:city 
+SELECT value:device, value:geo:city , value:event_name
 FROM events_strings
 
 -- COMMAND ----------
@@ -92,6 +92,10 @@ LIMIT 1
 -- MAGIC 
 -- MAGIC 
 -- MAGIC Spark SQL also has a **`schema_of_json`** function to derive the JSON schema from an example. Here, we copy and paste an example JSON to the function and chain it into the **`from_json`** function to cast our **`value`** field to a struct type.
+
+-- COMMAND ----------
+
+SELECT schema_of_json('{"device":"Linux","ecommerce":{"purchase_revenue_in_usd":1075.5,"total_item_quantity":1,"unique_items":1},"event_name":"finalize","event_previous_timestamp":1593879231210816,"event_timestamp":1593879335779563,"geo":{"city":"Houston","state":"TX"},"items":[{"coupon":"NEWBED10","item_id":"M_STAN_K","item_name":"Standard King Mattress","item_revenue_in_usd":1075.5,"price_in_usd":1195.0,"quantity":1}],"traffic_source":"email","user_first_touch_timestamp":1593454417513109,"user_id":"UA000000106116176"}') AS json 
 
 -- COMMAND ----------
 
@@ -162,6 +166,8 @@ WHERE ecommerce.purchase_revenue_in_usd IS NOT NULL
 
 SELECT user_id, event_timestamp, event_name, explode(items) AS item 
 FROM events
+WHERE user_id = "UA000000106466918"
+order by event_name
 
 -- COMMAND ----------
 
@@ -177,6 +183,15 @@ FROM events
 -- MAGIC The **`array_distinct`** function removes duplicate elements from an array.
 -- MAGIC 
 -- MAGIC Here, we combine these queries to create a simple table that shows the unique collection of actions and the items in a user's cart.
+
+-- COMMAND ----------
+
+SELECT user_id,
+  collect_set(event_name) AS event_history,
+  ((collect_set(items.item_id))) AS cart_history
+FROM events
+GROUP BY user_id
+
 
 -- COMMAND ----------
 
@@ -224,7 +239,7 @@ SELECT * FROM sales_enriched
 -- COMMAND ----------
 
 SELECT * FROM events 
-UNION 
+UNION ALL
 SELECT * FROM new_events_final
 
 -- COMMAND ----------

@@ -208,8 +208,8 @@ SELECT * FROM purchase_dates
 
 -- COMMAND ----------
 
--- INSERT INTO purchase_dates VALUES
--- (1, 600000000, 42.0, "2020-06-18")
+INSERT INTO purchase_dates VALUES
+(1, 600000000, 42.0, "2020-06-18")
 
 -- COMMAND ----------
 
@@ -337,6 +337,10 @@ DEEP CLONE purchases
 -- MAGIC Because all the data files must be copied over, this can take quite a while for large datasets.
 -- MAGIC 
 -- MAGIC If you wish to create a copy of a table quickly to test out applying changes without the risk of modifying the current table, **`SHALLOW CLONE`** can be a good option. Shallow clones just copy the Delta transaction logs, meaning that the data doesn't move.
+
+-- COMMAND ----------
+
+SELECT COUNT(*) FROM purchases_clone;
 
 -- COMMAND ----------
 

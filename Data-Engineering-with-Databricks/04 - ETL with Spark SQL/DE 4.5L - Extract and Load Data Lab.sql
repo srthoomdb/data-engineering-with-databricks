@@ -68,8 +68,14 @@
 
 -- COMMAND ----------
 
+DROP TABLE EVNTS_JSON;
+
+-- COMMAND ----------
+
 -- TODO
-<FILL_IN> ${da.paths.datasets}/raw/events-kafka/
+CREATE TABLE IF NOT EXISTS events_json(key BINARY, offset LONG, partition INTEGER, timestamp LONG, topic STRING, value BINARY)
+USING JSON
+OPTIONS (path = "${da.paths.datasets}/raw/events-kafka/");
 
 -- COMMAND ----------
 
@@ -100,7 +106,12 @@
 -- COMMAND ----------
 
 -- TODO
-<FILL_IN>
+CREATE TABLE IF NOT EXISTS events_raw(key BINARY, offset LONG, partition INTEGER, timestamp LONG, topic STRING, value BINARY);
+
+-- COMMAND ----------
+
+show tables;
+
 
 -- COMMAND ----------
 
@@ -129,7 +140,8 @@
 -- COMMAND ----------
 
 -- TODO
-<FILL_IN>
+INSERT INTO events_raw
+SELECT * FROM events_json;
 
 -- COMMAND ----------
 
@@ -141,7 +153,7 @@
 -- COMMAND ----------
 
 -- TODO
-<FILL_IN>
+SELECT * FROM events_raw;
 
 -- COMMAND ----------
 
@@ -169,8 +181,23 @@
 
 -- COMMAND ----------
 
+-- MAGIC %python
+-- MAGIC dbutils.fs.ls("dbfs:/user/sreeramreddy.thoom@databricks.com/dbacademy/dewd/source/eltwss/raw/item-lookup/")
+
+-- COMMAND ----------
+
+select "${da.paths.datasets}"
+
+-- COMMAND ----------
+
 -- TODO
-<FILL_IN> ${da.paths.datasets}/raw/item-lookup
+CREATE OR REPLACE TABLE item_lookup
+AS
+SELECT * FROM  parquet.`${da.paths.datasets}/raw/item-lookup`
+
+-- COMMAND ----------
+
+SHOW TABLES;
 
 -- COMMAND ----------
 

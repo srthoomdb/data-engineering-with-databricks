@@ -165,6 +165,15 @@ display(example_df)
 # MAGIC %md
 # MAGIC 
 # MAGIC 
+# MAGIC * A header
+# MAGIC * Bullet Points 
+# MAGIC * A link 
+
+# COMMAND ----------
+
+# MAGIC %md
+# MAGIC 
+# MAGIC 
 # MAGIC 
 # MAGIC ## Run a SQL cell
 # MAGIC 

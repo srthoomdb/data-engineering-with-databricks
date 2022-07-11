@@ -60,7 +60,8 @@
 
 # COMMAND ----------
 
-print("I'm running Python!")
+# MAGIC %python
+# MAGIC print("I'm running Python!")
 
 # COMMAND ----------
 
@@ -92,6 +93,11 @@ print("I'm running Python!")
 
 # COMMAND ----------
 
+# MAGIC %sql
+# MAGIC -- Pressing above A key created this cell
+
+# COMMAND ----------
+
 # MAGIC %md
 # MAGIC 
 # MAGIC 
@@ -104,6 +110,16 @@ print("I'm running Python!")
 # MAGIC **`SELECT "I'm running SQL!"`**
 # MAGIC 
 # MAGIC **NOTE**: There are a number of different methods for adding, moving, and deleting cells including GUI options and keyboard shortcuts. Refer to the <a href="https://docs.databricks.com/notebooks/notebooks-use.html#develop-notebooks" target="_blank">docs</a> for details.
+
+# COMMAND ----------
+
+# MAGIC %sql
+# MAGIC SELECT "I'm running SQL!"
+
+# COMMAND ----------
+
+# MAGIC %sql
+# MAGIC -- Pressing B created this cell as below
 
 # COMMAND ----------
 
@@ -136,7 +152,8 @@ print("I'm running Python!")
 
 # COMMAND ----------
 
-print("Hello Python!")
+# MAGIC %python
+# MAGIC print("Hello Python!")
 
 # COMMAND ----------
 
@@ -210,7 +227,7 @@ print("Hello Python!")
 # COMMAND ----------
 
 # MAGIC %sql
-# MAGIC -- SELECT * FROM demo_tmp_vw
+# MAGIC SELECT * FROM demo_tmp_vw
 
 # COMMAND ----------
 
@@ -254,10 +271,11 @@ print("Hello Python!")
 
 # COMMAND ----------
 
-print(f"DA:                   {DA}")
-print(f"DA.username:          {DA.username}")
-print(f"DA.paths.working_dir: {DA.paths.working_dir}")
-print(f"DA.db_name:           {DA.db_name}")
+# MAGIC %python
+# MAGIC print(f"DA:                   {DA}")
+# MAGIC print(f"DA.username:          {DA.username}")
+# MAGIC print(f"DA.paths.working_dir: {DA.paths.working_dir}")
+# MAGIC print(f"DA.db_name:           {DA.db_name}")
 
 # COMMAND ----------
 
@@ -289,7 +307,12 @@ print(f"DA.db_name:           {DA.db_name}")
 
 # COMMAND ----------
 
-dbutils.fs.ls("/databricks-datasets")
+# MAGIC %sh ls -lrta /
+
+# COMMAND ----------
+
+# MAGIC %python
+# MAGIC dbutils.fs.ls("/databricks-datasets")
 
 # COMMAND ----------
 
@@ -306,7 +329,8 @@ dbutils.fs.ls("/databricks-datasets")
 
 # COMMAND ----------
 
-display(dbutils.fs.ls("/databricks-datasets"))
+# MAGIC %python
+# MAGIC display(dbutils.fs.ls("/databricks-datasets"))
 
 # COMMAND ----------
 
@@ -387,7 +411,8 @@ display(dbutils.fs.ls("/databricks-datasets"))
 
 # COMMAND ----------
 
-DA.cleanup()
+# MAGIC %python
+# MAGIC DA.cleanup()
 
 # COMMAND ----------
 

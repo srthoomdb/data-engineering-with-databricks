@@ -116,6 +116,14 @@ LOCATION "${da.paths.working_dir}/sales-csv"
 
 -- COMMAND ----------
 
+SHOW  TABLES;
+
+-- COMMAND ----------
+
+SHOW CURRENT DATABASE;
+
+-- COMMAND ----------
+
 SELECT * FROM sales_csv
 
 -- COMMAND ----------
@@ -263,6 +271,10 @@ DESCRIBE EXTENDED users_jdbc
 -- MAGIC 
 -- MAGIC 
 -- MAGIC While the table is listed as **`MANAGED`**, listing the contents of the specified location confirms that no data is being persisted locally.
+
+-- COMMAND ----------
+
+SHOW TABLES;
 
 -- COMMAND ----------
 

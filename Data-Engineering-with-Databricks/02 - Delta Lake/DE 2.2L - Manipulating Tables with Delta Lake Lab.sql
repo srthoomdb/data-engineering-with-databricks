@@ -63,7 +63,13 @@
 -- COMMAND ----------
 
 -- TODO
-<FILL-IN>
+CREATE TABLE IF NOT EXISTS beans
+(
+  name STRING,
+  color STRING,
+  grams FLOAT,
+  delicious BOOLEAN
+);
 
 -- COMMAND ----------
 
@@ -72,6 +78,14 @@
 -- MAGIC 
 -- MAGIC 
 -- MAGIC **NOTE**: We'll use Python to run checks occasionally throughout the lab. The following cell will return as error with a message on what needs to change if you have not followed instructions. No output from cell execution means that you have completed this step.
+
+-- COMMAND ----------
+
+-- MAGIC %python 
+-- MAGIC cols = spark.table("beans").columns
+-- MAGIC type(cols)
+-- MAGIC print(cols)
+-- MAGIC spark.table("beans").dtypes
 
 -- COMMAND ----------
 
@@ -107,7 +121,7 @@ INSERT INTO beans VALUES
 -- COMMAND ----------
 
 -- TODO
-<FILL-IN>
+SELECT * FROM beans;
 
 -- COMMAND ----------
 
@@ -120,10 +134,14 @@ INSERT INTO beans VALUES
 -- COMMAND ----------
 
 -- TODO
-<FILL-IN>
+INSERT INTO beans VALUES
 ('pinto', 'brown', 1.5, true),
 ('green', 'green', 178.3, true),
 ('beanbag chair', 'white', 40000, false)
+
+-- COMMAND ----------
+
+SELECT * FROM beans;
 
 -- COMMAND ----------
 
@@ -132,6 +150,16 @@ INSERT INTO beans VALUES
 -- MAGIC 
 -- MAGIC 
 -- MAGIC Run the cell below to confirm the data is in the proper state.
+
+-- COMMAND ----------
+
+-- MAGIC %python 
+-- MAGIC df = spark.table("beans").select("name").collect()
+-- MAGIC for row in df:
+-- MAGIC   print(row["name"])
+-- MAGIC   
+-- MAGIC s = set(row["name"] for row in df)
+-- MAGIC print(s)
 
 -- COMMAND ----------
 
@@ -170,8 +198,22 @@ WHERE name = "jelly"
 
 -- COMMAND ----------
 
+DESCRIBE TABLE beans;
+
+-- COMMAND ----------
+
+select * from beans where name = "jelly"
+
+-- COMMAND ----------
+
 -- TODO
-<FILL-IN>
+UPDATE beans 
+SET grams = 1500
+WHERE name = "pinto"
+
+-- COMMAND ----------
+
+select * from beans
 
 -- COMMAND ----------
 
@@ -205,7 +247,8 @@ WHERE name = "jelly"
 -- COMMAND ----------
 
 -- TODO
-<FILL-IN>
+DELETE FROM beans
+WHERE delicious = false;
 
 -- COMMAND ----------
 
@@ -256,8 +299,27 @@ SELECT * FROM new_beans
 
 -- COMMAND ----------
 
+select "old" as TYPE, b.* from beans b
+union all 
+select "new" as TYPE, nb.* from new_beans nb
+order by 2;
+
+
+-- COMMAND ----------
+
 -- TODO
-<FILL-IN>
+MERGE INTO beans b
+USING new_beans nb
+ON b.name = nb.name AND b.color = nb.color
+WHEN MATCHED 
+  THEN UPDATE SET b.grams = b.grams + nb.grams
+WHEN NOT MATCHED AND nb.delicious = true
+  THEN INSERT *
+;
+
+-- COMMAND ----------
+
+select * from beans order by 1;
 
 -- COMMAND ----------
 
@@ -266,6 +328,17 @@ SELECT * FROM new_beans
 -- MAGIC 
 -- MAGIC 
 -- MAGIC Run the cell below to check your work.
+
+-- COMMAND ----------
+
+-- MAGIC %python
+-- MAGIC version = spark.sql("DESCRIBE HISTORY beans").selectExpr("max(version)").first()[0]
+-- MAGIC last_tx = spark.sql("DESCRIBE HISTORY beans").filter(f"version={version}")
+-- MAGIC print(type(last_tx))
+-- MAGIC f = last_tx.select("operationMetrics").first()
+-- MAGIC print(f)
+-- MAGIC f1 = f[0]
+-- MAGIC f1["numOutputRows"]
 
 -- COMMAND ----------
 
@@ -295,8 +368,16 @@ SELECT * FROM new_beans
 
 -- COMMAND ----------
 
+SHOW TABLES
+
+-- COMMAND ----------
+
+SHOW databases like '*thoom*'
+
+-- COMMAND ----------
+
 -- TODO
-<FILL-IN>
+DROP TABLE beans;
 
 -- COMMAND ----------
 
